@@ -1,0 +1,49 @@
+body {
+}
+
+
+#wrapper {
+	margin:0px auto;
+}
+
+#page_headers {
+	background-color:black;
+	height:70px;
+}
+
+h1, h2, h3 {
+	color:white;
+	margin:0px auto;
+}
+
+h1 {
+	font-size:20px;
+}
+
+h2 {
+	font-size:16px;
+}
+
+
+#non-modals {
+	background: url("koi_bg_blurred.jpeg") no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  /*  position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;*/
+/*	background-color:#4A4E4F;
+	background-color:rgba(74,78,79,0.4);
+	opacity:0.85;
+*/
+	height:220px;
+}
+
+#register_modal, #login_modal {
+	border-radius:5px;
+}
+
+#about_drop {
+	border:5px solid black;
+}
