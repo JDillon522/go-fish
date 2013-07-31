@@ -23,26 +23,29 @@
 <body>
 	<div id="wrapper">
 		<div id="page_headers">
-		<h1 class="center">Node Fish</h1>
-		<h2>Three developers-in-training attempting to learn node.js</h2>
-		</div> <!--end of page_headers-->
-		<div id="non-modals">
-			<div id="login_div" class="right"> <!--using foundation modals-->
+			<div id="non-modals">
+				<div id="login_div" class="right"> <!--using foundation modals-->
 					<h3 data-reveal-id="login_modal">Login</h3>
-			</div> <!--end of login_div-->
-			<div id="register_div" class="right"> <!--using foundation modals-->
-					<h3 data-reveal-id="register_modal">Register</h3>
-			</div> <!--end of register_div-->
-			<div id="center content">
-				<img>
-				<div id="about"> <!--uses jquery dropdown instead of foundation modals-->
-					<h3 data-dropdown="about_drop">About this project</h3>
-					<div id="about_drop" class="f-dropdown content large" data-dropdown-content>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe, beatae, perferendis voluptatem nihil optio aliquid quos magnam quidem dignissimos voluptatibus voluptas praesentium tenetur ipsum sapiente dicta earum maiores reiciendis maxime!</p>
-					</div> <!--end of about_drop-->
-				</div> <!--end of about-->
-			</div> <!--end of center content-->
-		</div> <!--end of non-modals-->
+				</div> <!--end of login_div-->
+				<div id="register_div" class="right"> <!--using foundation modals-->
+						<h3 data-reveal-id="register_modal">Register</h3>
+				</div> <!--end of register_div-->
+			</div> <!--end of non-modals-->
+		</div> <!--end of page_headers-->
+		<div id="center_content">
+			<div id="center_text">
+				<div class="row">
+					<h1 class="center">Node Fish</h1>
+					<h2>Three developers-in-training attempting to learn node.js</h2>
+					<div id="about"> <!--uses jquery dropdown instead of foundation modals-->
+						<h3 data-dropdown="about_drop">About this project</h3>
+						<div id="about_drop" class="f-dropdown content large" data-dropdown-content>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe, beatae, perferendis voluptatem nihil optio aliquid quos magnam quidem dignissimos voluptatibus voluptas praesentium tenetur ipsum sapiente dicta earum maiores reiciendis maxime!</p>
+						</div> <!--end of about_drop-->
+					</div> <!--end of about-->
+				</div><!--end of row-->
+			</div> <!--end of center_text-->
+		</div> <!--end of center content-->
 		<div id="login_modal" class="reveal-modal [medium]">		
 			<form id="login_form" action="#" method="get">
 				<div id="login_errors">
@@ -50,6 +53,8 @@
 				</div> <!--end of login_errors-->
 				<input type="text" id="login_username" placeholder="Username">
 				<input type="text" id="login_password" placeholder="Password">
+				<!--change this type to a submit once hooked up to backend-->
+				<input type="button" id="submit" name="submit" value="Login">
 			</form>
 		</div> <!--end of login_modal-->
 		<div id="register_modal" class="reveal-modal [medium]">

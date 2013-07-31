@@ -1,14 +1,5 @@
-body {
-}
-
-
 #wrapper {
 	margin:0px auto;
-}
-
-#page_headers {
-	background-color:black;
-	height:70px;
 }
 
 h1, h2, h3 {
@@ -16,34 +7,43 @@ h1, h2, h3 {
 	margin:0px auto;
 }
 
-h1 {
-	font-size:20px;
+#page_headers {
+	background-color:black;
+	height:50px;
 }
 
-h2 {
-	font-size:16px;
+#page_headers #login_div {
+	margin-left:10px;
+	margin-right:10px;
 }
 
 
-#non-modals {
+#center_content {
 	background: url("koi_oil_crop.jpeg") no-repeat center center fixed; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-  /*  position: absolute;
-    top: 0; right: 0; bottom: 0; left: 0;*/
-/*	background-color:#4A4E4F;
-	background-color:rgba(74,78,79,0.4);
-	opacity:0.85;
-*/
-	height:220px;
+	height:300px;
 }
 
-#register_modal, #login_modal {
+	#center_content #center_text {
+		background-color:rgba(74,78,79,0.4);
+		opacity:0.85;
+	}
+
+#register_modal, #login_modal, #register_confirmation {
 	border-radius:5px;
 }
 
+#register_confirmation {
+}
+
+	#register_confirmation h3 {
+		color:black;
+	}
+
 #about_drop {
 	border:5px solid black;
+	color:black;
 }
