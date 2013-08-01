@@ -142,6 +142,37 @@ testServer = http.createServer(function (request, response){
 	});
 }).listen(8080);
 
+function loginUser(username){
+	console.log("Hello, " + username + "!");
+}
+
+function checkForExistingUser(username, password){
+	//we have to send the password so we can send it on to the loginUser
+	// if we register this user
+	db.query(
+		'SELECT username, hash FROM users WHERE username=?',
+		[username],
+		function (errors, results, fields) {
+			if (errors) throw errors;
+
+			//console.log(this.sql);
+			console.log(results);
+
+			if (results.length === 0){
+				queryResult = {
+					'success': false,
+					'message': ['There is no such user. Why not Register with us?']
+					//this is an array since the front end expect the 'message' key
+					// to be an array
+				}
+				eventEmitter.emit('loginResult', queryResult);
+			}
+			else {
+				loginUser(username);
+			}
+	});
+}
+
 function addUser(username, email, password){
 	//first, hash the password
 	//var hash = hashData(password);
@@ -168,8 +199,8 @@ function addUser(username, email, password){
 	);
 }
 
-function checkForUser(username, email, password){
-	//we have to send the password so we can send it on to the database
+function checkForDuplicateUser(username, email, password){
+	//we have to include the password here, to send it on to the database
 	// if we register this user
 	db.query(
 		'SELECT username, email FROM users WHERE username=? OR email=?',
@@ -178,10 +209,7 @@ function checkForUser(username, email, password){
 			if (errors) throw errors;
 
 			//console.log(this.sql);
-			console.log(results);
 
-			//var query_username = fields[0].name;
-			//var query_email = fields[1].name;
 			var error_message = new Array();
 
 			if (results.length > 0){
@@ -236,7 +264,7 @@ function validateLoginData(username, password){
 	}
 	else {
 		console.log("Form information valid");
-		//console.log(findUser(username, password));
+		checkForExistingUser(username, password);
 	}
 }
 
@@ -276,7 +304,7 @@ function validateRegistrationData(username, email, password, confirm_password){
 	else
 	{
 		console.log("Form information valid");
-		checkForUser(username, email);
+		checkForDuplicateUser(username, email);
 	}
 }
 
