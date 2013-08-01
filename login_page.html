@@ -16,8 +16,36 @@
   <link rel="stylesheet" href="css/login_page.css"/>
 
   <script src="foundation/js/vendor/custom.modernizr.js"></script>
-  <script type="text/css" src="jquery.js"></script>
-  <script type="text/css" src="login_page.js"></script>
+  <script type="text/javascript" src="js/jquery.js"></script>
+  <!-- <script type="text/css" src="login_page.js"></script> -->
+  <script type="text/javascript">
+	$(document).ready(function(){
+		//alert("hi");
+		$("#register_form").submit(function(){
+			var form = $(this);
+			
+			alert(form.attr('action'));
+			alert(form.serialize());
+
+			$.getJSON(
+				form.attr('action'),
+				form.serialize(),
+				function (result){  
+					if (result.success == true){
+						$('#register_errors').html("<p>Success: "+result.message+"</p>");
+					}
+					else if (result.success == false){
+						var html = "";
+						for (var i = 0; i < result.message.length; i++){
+							html += "<p>Failed: "+result.message[i]+"</p>";
+						}
+						$('#register_errors').html(html);
+					}
+			}); 
+			//return false;
+		});
+	});
+  </script>
 
 </head>
 <body>
@@ -54,7 +82,7 @@
 				<input type="text" id="login_username" placeholder="Username">
 				<input type="text" id="login_password" placeholder="Password">
 				<!--change this type to a submit once hooked up to backend-->
-				<input type="button" id="submit" name="submit" value="Login">
+				<input type="submit" id="submit" name="submit" value="Login">
 			</form>
 		</div> <!--end of login_modal-->
 		<div id="register_modal" class="reveal-modal [medium]">
@@ -62,12 +90,13 @@
 				<div id="register_errors">
 					<!--deposit registration errors here-->
 				</div> <!--end of register_errors-->
-				<input type="text" id="register_username" placeholder="Username">
-				<input type="text" id="register_email" placeholder="Email">
-				<input type="text" id="register_password" placeholder="Password">
-				<input type="text" id="confirm_password" placeholder="Confirm Password">
+				<input type="text" id="register_username" name="register_username"placeholder="Username">
+				<input type="text" id="register_email" name="register_email" placeholder="Email">
+				<input type="password" id="register_password" name="register_password" placeholder="Password">
+				<input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password">
 				<!--change this type to a submit once hooked up to backend-->
-				<input type="button" id="submit" name="submit" value="Register" data-reveal-id="register_confirmation">
+				<input type="submit" id="submit" name="submit" value="Register">
+				<!-- data-reveal-id="register_confirmation"> -->
 			</form>
 		</div> <!--end of register_modal-->
 		<div id="register_confirmation" class="reveal-modal [small]">
