@@ -67,10 +67,12 @@ testServer = http.createServer(function (request, response){
 		}
 		else if(pageUrl === '/login'){
 
-			console.log("We've hit the login hand");
+			console.log("We've hit the login button!");
 
 			var dataQuery = url.parse(request.url).query;
 			var formData = querystring.parse(dataQuery);
+
+			validateLoginData(formData.login_username, formData.login_password);
 
 			//redirect to login.js and send 'formData' info with it?
 			
@@ -181,12 +183,13 @@ function addClient(db, first_name, last_name, email){
 
 }
 
-function validateLoginData(login_username, login_password){
+function validateLoginData(username, password){
 	var validator = new Validator();
-	validator.check(login_username, {
+
+	validator.check(username, {
 		notEmpty: 'Username field cannot not be empty.',
-		isAlpha: 'Invalid characters: Username should only contain letters.'
-	}).notEmpty().isAlpha();
+		len: 'Username should be between 3 and 13 characters.'
+	}).notEmpty().len(3, 13);
 
 	validator.check(password, {
 		notEmpty: 'Password field cannot be empty',
@@ -196,7 +199,7 @@ function validateLoginData(login_username, login_password){
 	var errors = validator.getErrors(); //returns an ARRAY of error messages
 
 	if (errors.length > 0){
-		console.log("Error with the form");
+		console.log(errors);
 	}
 	else
 	{

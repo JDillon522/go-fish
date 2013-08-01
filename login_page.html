@@ -20,13 +20,9 @@
   <!-- <script type="text/css" src="login_page.js"></script> -->
   <script type="text/javascript">
 	$(document).ready(function(){
-		//alert("hi");
+
 		$("#register_form").submit(function(){
 			var form = $(this);
-			
-			alert(form.attr('action'));
-			alert(form.serialize());
-
 			$.getJSON(
 				form.attr('action'),
 				form.serialize(),
@@ -42,7 +38,25 @@
 						$('#register_errors').html(html);
 					}
 			}); 
-			//return false;
+		});
+
+		$("#login_form").submit(function(){
+			var form = $(this);
+			$.getJSON(
+				form.attr('action'),
+				form.serialize(),
+				function (result){  
+					if (result.success == true){
+						$('#login_errors').html("<p>Success: "+result.message+"</p>");
+					}
+					else if (result.success == false){
+						var html = "";
+						for (var i = 0; i < result.message.length; i++){
+							html += "<p>Failed: "+result.message[i]+"</p>";
+						}
+						$('#login_errors').html(html);
+					}
+			}); 
 		});
 	});
   </script>
@@ -79,8 +93,8 @@
 				<div id="login_errors">
 					<!--deposit login errors here-->
 				</div> <!--end of login_errors-->
-				<input type="text" id="login_username" placeholder="Username">
-				<input type="text" id="login_password" placeholder="Password">
+				<input type="text" id="login_username" name="login_username" placeholder="Username">
+				<input type="password" id="login_password" name="login_password" placeholder="Password">
 				<!--change this type to a submit once hooked up to backend-->
 				<input type="submit" id="submit" name="submit" value="Login">
 			</form>
