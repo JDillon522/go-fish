@@ -16,6 +16,8 @@ CREATE  TABLE IF NOT EXISTS `go_fish`.`users` (
   `username` VARCHAR(255) NULL ,
   `email` VARCHAR(255) NULL ,
   `hash` VARCHAR(255) NULL ,
+  `created_at` DATETIME NULL ,
+  `updated_at` VARCHAR(45) NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
@@ -31,6 +33,8 @@ CREATE  TABLE IF NOT EXISTS `go_fish`.`profiles` (
   `wins` INT NULL ,
   `losses` INT NULL ,
   `ties` INT NULL ,
+  `created_at` DATETIME NULL ,
+  `updated_at` DATETIME NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_profiles_users_idx` (`user_id` ASC) ,
   CONSTRAINT `fk_profiles_users`
