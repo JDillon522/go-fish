@@ -27,17 +27,15 @@
 				form.attr('action'),
 				form.serialize(),
 				function (result){  
-					if (result.success == true){
-						$('#register_errors').html("<p>Success: "+result.message+"</p>");
-					}
-					else if (result.success == false){
+					if (result.success === false){
 						var html = "";
 						for (var i = 0; i < result.message.length; i++){
 							html += "<p>Failed: "+result.message[i]+"</p>";
 						}
 						$('#register_errors').html(html);
 					}
-			}); 
+			});
+			return false;
 		});
 
 		$("#login_form").submit(function(){
@@ -46,17 +44,15 @@
 				form.attr('action'),
 				form.serialize(),
 				function (result){  
-					if (result.success == true){
-						$('#login_errors').html("<p>Success: "+result.message+"</p>");
-					}
-					else if (result.success == false){
+					if (result.success == false){
 						var html = "";
 						for (var i = 0; i < result.message.length; i++){
 							html += "<p>Failed: "+result.message[i]+"</p>";
 						}
 						$('#login_errors').html(html);
 					}
-			}); 
+			});
+			return false;
 		});
 	});
   </script>
