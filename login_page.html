@@ -34,7 +34,10 @@
 						}
 						$('#register_errors').html(html);
 					}
-			});
+					else {
+						window.location = result.location;
+					}
+				});
 			return false;
 		});
 
@@ -51,7 +54,12 @@
 						}
 						$('#login_errors').html(html);
 					}
-			});
+					else {
+						html = "<p> We are logged in, let's redirect!</p>";
+						$('#login_errors').html(html);
+						window.location = result.location;
+					}
+				});
 			return false;
 		});
 	});

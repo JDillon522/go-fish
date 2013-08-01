@@ -3,8 +3,28 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Temporary "Post-login" Landing Site</title>
+	<script type="text/javascript" src="assets/js/jquery.js"></script>
+	<script type="text/javascript">  
+		$(document).ready(function(){
+			$.getJSON("/get_username", function(result) {  
+				$('h2').append(" "+result.client_name+"!");
+			});
+			
+			$('a.logout').click(function(e){
+				e.preventDefault();
+				$.getJSON("/logout_user", function(result) {  
+					if(result.success)
+						window.location = result.location
+				});
+				
+			});
+		});	
+	</script>
 </head>
 <body>
-	<h1>Hello, session[user][username]</h1>
+	<div>
+		<h2>Welcome,</h2>
+		<a href='#' class='logout'>Logout</a>
+	</div>
 </body>
 </html>

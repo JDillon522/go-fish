@@ -60,16 +60,12 @@ testServer = http.createServer(function (request, response){
 				//set the session variables, login the user
 				if(result.success){
 					session.set('is_logged_in', true);
-					//get this from result
 					session.set('user', {
-						'username': result.username
+						'username': formData.username
 					});
 				}
-				else{
-					//Send response back to display message
-					response.end(JSON.stringify(result));
-				}
-
+				//send back the result to the login form
+				response.end(JSON.stringify(result));
 			});
 
 			if(pageUrl === '/register'){
@@ -85,11 +81,14 @@ testServer = http.createServer(function (request, response){
 					formData.login_password);
 			}
 		}
+
 		//else if(other path for other pages?){}
+
 		else{
 			//check if client is login
-			if((session.get('is_logged_in') != true) && (pageUrl === '/'))
+			if((session.get('is_logged_in') != true) && (pageUrl === '/')){
 				filePath = 'login_page.html';
+			}
 			else{
 				filePath = __dirname + pageUrl;
 			}
@@ -142,8 +141,24 @@ testServer = http.createServer(function (request, response){
 	});
 }).listen(8080);
 
-function loginUser(username){
-	console.log("Hello, " + username + "!");
+function checkUserPassword(hash, password){
+
+	if (hash === password){
+		goodPasswordResult = {
+			'success' : true,
+			'location': '/temp_index.html'
+		}
+		console.log('User checks out, we can log in');
+		eventEmitter.emit('loginResult', goodPasswordResult);
+	}
+	else{
+		badPasswordResult = {
+			'success' : false,
+			'message' : ['Incorrect Password.']
+		}
+		eventEmitter.emit('loginResult', badPasswordResult);
+	}
+
 }
 
 function checkForExistingUser(username, password){
@@ -158,17 +173,21 @@ function checkForExistingUser(username, password){
 			//console.log(this.sql);
 			console.log(results);
 
+			//pull out hashed password
+			hash = results[0].hash;
+
 			if (results.length === 0){
-				queryResult = {
+				badUserCheckResult = {
 					'success': false,
 					'message': ['There is no such user. Why not Register with us?']
 					//this is an array since the front end expect the 'message' key
 					// to be an array
 				}
-				eventEmitter.emit('loginResult', queryResult);
+				eventEmitter.emit('loginResult', badUserCheckResult);
 			}
 			else {
-				loginUser(username);
+				//get
+				checkUserPassword(hash, password);
 			}
 	});
 }
@@ -185,7 +204,7 @@ function addUser(username, email, password){
 
 			console.log(this.sql);
 
-			insert_result = {
+			goodInsertResult = {
 				'success': true,
 				'message': 'User is registered',
 				'location': '/temp_index.html'
@@ -194,7 +213,7 @@ function addUser(username, email, password){
 			console.log("Registered: ");
 			console.log(results);
 
-			eventEmitter.emit('addUserResult', insert_result);
+			eventEmitter.emit('addUserResult', goodInsertResult);
 		}
 	);
 }
@@ -221,16 +240,15 @@ function checkForDuplicateUser(username, email, password){
 						error_message.push('This email is already registered.');
 					}
 				}
-				queryResult = {
+				badDuplicateUserResult = {
 					'success': false,
 					'message': error_message
 				}
-				eventEmitter.emit('loginResult', queryResult);
+				eventEmitter.emit('loginResult', badDuplicateUserResult);
 			}
 			else {
-				queryResult = {
-					'success': false,
-					'message': error_message
+				noDuplicateUserResult = {
+					'success': true
 				}
 				addUser(username, email, password);
 			}
@@ -256,11 +274,11 @@ function validateLoginData(username, password){
 	if (errors.length > 0){
 		console.log(errors);
 		//Have problems, bail out
-		badResult = {
+		badLoginDataResult = {
 			'success' : false,
 			'message' : errors
 		}
-		eventEmitter.emit('loginResult', badResult);
+		eventEmitter.emit('loginResult', badLoginDataResult);
 	}
 	else {
 		console.log("Form information valid");
@@ -295,11 +313,11 @@ function validateRegistrationData(username, email, password, confirm_password){
 	if (errors.length > 0){
 		console.log(errors);
 		//Have problems, bail out
-		badResult = {
+		badRegistrationDataResult = {
 			'success' : false,
 			'message' : errors
 		}
-		eventEmitter.emit('loginResult', badResult);
+		eventEmitter.emit('loginResult', badRegistrationDataResult);
 	}
 	else
 	{
