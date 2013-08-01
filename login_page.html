@@ -28,14 +28,15 @@
 				form.serialize(),
 				function (result){  
 					if (result.success === false){
-						var html = "";
+						var html = "<p>Failed:</p>";
 						for (var i = 0; i < result.message.length; i++){
-							html += "<p>Failed: "+result.message[i]+"</p>";
+							html += "<p>"+result.message[i]+"</p>";
 						}
 						$('#register_errors').html(html);
 					}
 					else {
-						window.location = result.location;
+						var html = "Success: <p>"+result.message+"</p>";
+						$('#register_errors').html(html);
 					}
 				});
 			return false;
@@ -55,8 +56,6 @@
 						$('#login_errors').html(html);
 					}
 					else {
-						html = "<p> We are logged in, let's redirect!</p>";
-						$('#login_errors').html(html);
 						window.location = result.location;
 					}
 				});

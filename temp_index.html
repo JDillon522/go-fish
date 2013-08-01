@@ -7,12 +7,12 @@
 	<script type="text/javascript">  
 		$(document).ready(function(){
 			$.getJSON("/get_username", function(result) {  
-				$('h2').append(" "+result.client_name+"!");
+				$('h2').append(" "+result.username+"!");
 			});
 			
 			$('a.logout').click(function(e){
 				e.preventDefault();
-				$.getJSON("/logout_user", function(result) {  
+				$.getJSON("/logout", function(result) {  
 					if(result.success)
 						window.location = result.location
 				});

@@ -61,8 +61,9 @@ testServer = http.createServer(function (request, response){
 				if(result.success){
 					session.set('is_logged_in', true);
 					session.set('user', {
-						'username': formData.username
+						'username': formData.login_username
 					});
+					console.log(session.get('user').username);
 				}
 				//send back the result to the login form
 				response.end(JSON.stringify(result));
@@ -81,8 +82,25 @@ testServer = http.createServer(function (request, response){
 					formData.login_password);
 			}
 		}
-
-		//else if(other path for other pages?){}
+		else if (pageUrl === '/get_username'){
+			//quick and dirty, probably not worth copying into production code :P
+			username = session.get('user').username;
+			result = { 'username' : username }
+			console.log("username: " + username);
+			response.end(JSON.stringify(result));
+		}
+		else if (pageUrl === '/logout'){
+			session.set('is_logged_in', false);
+			session.set('user', {});
+			
+			//send back the result to clients page
+			response.end(
+				JSON.stringify({
+					'success': true,
+					'location': '/login_page.html'
+				})
+			);
+		}
 
 		else{
 			//check if client is login
@@ -173,9 +191,6 @@ function checkForExistingUser(username, password){
 			//console.log(this.sql);
 			console.log(results);
 
-			//pull out hashed password
-			hash = results[0].hash;
-
 			if (results.length === 0){
 				badUserCheckResult = {
 					'success': false,
@@ -186,7 +201,8 @@ function checkForExistingUser(username, password){
 				eventEmitter.emit('loginResult', badUserCheckResult);
 			}
 			else {
-				//get
+				//pull out hashed password
+				hash = results[0].hash;
 				checkUserPassword(hash, password);
 			}
 	});
@@ -206,14 +222,13 @@ function addUser(username, email, password){
 
 			goodInsertResult = {
 				'success': true,
-				'message': 'User is registered',
-				'location': '/temp_index.html'
+				'message': 'You are registered! Please log in.'
 			}
 
 			console.log("Registered: ");
 			console.log(results);
 
-			eventEmitter.emit('addUserResult', goodInsertResult);
+			eventEmitter.emit('loginResult', goodInsertResult);
 		}
 	);
 }
@@ -252,7 +267,6 @@ function checkForDuplicateUser(username, email, password){
 				}
 				addUser(username, email, password);
 			}
-			console.log(queryResult.message);
 	});
 }
 
