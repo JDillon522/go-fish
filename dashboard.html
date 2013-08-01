@@ -32,7 +32,7 @@
 				</ul>
 			</div><!--end of nav_bar-->
 			<div id="username" class="right">
-				<h3>You are signed in as: User3322 <span id="username_display"><!--pipe out username here--></span></h3>
+				<h3>You are signed in as: <span id="username_display"><!--pipe out username here--></span></h3>
 			</div><!--end of username-->
 		</div><!--end of page_headers-->
 		<div id="boxes" class="row">
@@ -42,9 +42,7 @@
 					<!--here's the form for selecting games, needs to be wired up-->
 					<form id="game_form">
 						<select name="game_select" id="game_select" size="20">
-							<option value="test1">test1</option>
-							<option value="test2">test2</option>
-							<option value="test3">test3</option>
+							<!--append games as options (<option value="foo">bar</option>)-->
 						</select>
 						<!--submit button for game_select-->
 						<input type="submit" value="Go Fish!" name="submit" class="button round secondary">
@@ -56,37 +54,21 @@
 				<h4>Global Chat</h4>
 				<div id="chat_display">
 					<!--append messages as <p>'s?-->
-					<p>User5533: Here is a test message</p>
-					<p>User3322: noob</p>
-					<p>User3322: noob</p>
-					<p>User3322: noob</p>
-					<p>User3322: noob</p>
-					<p>User3322: noob</p>
-					<p>User3322: noob</p>
-					<p>User3322: noob</p>
-					<p>User3322: noob</p>
-					<p>User3322: noob</p>
-					<p>User3322: noob</p>
-					<p>User3322: noob</p>
-					<p>User3322: noob</p>
-					<p>User3322: noob</p>
-					<p>User3322: noob</p>
-					<p>User3322: noob</p>
-					<p>User3322: noob</p>
-					<p>User3322: noob</p>
-					<p>User3322: noob</p>
-					<p>User3322: noob</p>
-					<p>User3322: noob</p>
 				</div>
 				<div id="send_message_area">
 					<form id="send_message">
+						<!--this form is really hard to read because of the foundation formatting, i will mark the inputs with comments-->
 						<div class="row">
 							<div class="large-10 columns">
-								<input type="text">
+								<!--heres the text input-->
+								<input type="text" name="message">
 							</div>
 							<div class="large-2 columns" id="chat_submit_area">
-								<input type="submit" name="submit" value="Send">
+								<!--heres the submit-->
+								<input type="submit" name="submit" value="send">
 							</div>
+								<!--here's the (possibly unnecessary) hidden-->
+								<input type="hidden" name="action" value="message">
 						</div>
 					</form>
 				</div><!--end of send_message-->
@@ -94,11 +76,7 @@
 			<div id="users" class="large-2 columns">
 				<h4>Online Users</h4>
 				<div id="user_box">
-					<!--online users displayed here-->
-					<span>User5533</span><br>
-					<span>User3322</span><br>
-					<span>TestUserLong</span><br>
-					<span>THIRTEENALLCA</span><br>
+					<!--online users displayed here, use <p></p> or <span></span><br>-->
 				</div><!--end of user_box-->
 			</div><!--end of users-->
 		</div><!--end of boxes-->
