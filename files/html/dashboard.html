@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>Node Fish - Dashboard</title>
+
+  <!-- If you are using CSS version, only link these 2 files, you may add app.css to use for your overrides if you like. -->
+  <link rel="stylesheet" href="../assets/foundation/css/normalize.css" />
+  <link rel="stylesheet" href="../assets/foundation/css/foundation.css" />
+
+  <!-- If you are using the gem version, you need this only -->
+  <link rel="stylesheet" href="../assets/css/dashboard.css"/>
+
+  <script src="../assets/foundation/js/vendor/custom.modernizr.js"></script>
+  <script type="text/css" src="../assets/js/jquery.js"></script>
+  <script type="text/css" src="dashboard.js"></script>
+
+</head>
+<body>
+	<div id="wrapper">
+		<div id="page_headers">
+			<div id="nav_bar" class="left">
+				<ul id="links">
+					<li class="link"><a href="#">Dashboard</a></li>
+					<li class="link" data-reveal-id="profile_modal">Profile</li>
+					<li class="link" data-reveal-id="create_game_modal">Create a game</li>
+					<li class="link"><a href="#">Logout</a></li>
+				</ul>
+			</div><!--end of nav_bar-->
+			<div id="username" class="right">
+				<h3>You are signed in as: <span id="username_display"><!--pipe out username here--></span></h3>
+			</div><!--end of username-->
+		</div><!--end of page_headers-->
+		<div id="boxes" class="row">
+			<div id="games" class="large-4 columns">
+				<h4>Game List</h4>
+					<!--here's the form for selecting games, needs to be wired up-->
+					<form id="game_form">
+						<select name="game_select" id="game_select" size="20">
+							<!--append games as options (<option value="foo">bar</option>)-->
+						</select>
+						<!--submit button for game_select-->
+						<input type="submit" value="Go Fish!" name="submit" class="button round secondary">
+						<input type="hidden" name="action" value="game_select">
+					</form>
+			</div><!--end of games-->
+			<div id="chat_window" class="large-6 columns">
+				<h4>Global Chat</h4>
+				<div id="chat_display">
+					<!--append messages as <p>'s?-->
+				</div>
+				<div id="send_message_area">
+					<form id="send_message">
+						<!--this form is really hard to read because of the foundation formatting, i will mark the inputs with comments-->
+						<div class="row">
+							<div class="large-10 columns">
+								<!--heres the text input-->
+								<input type="text" name="message">
+							</div>
+							<div class="large-2 columns" id="chat_submit_area">
+								<!--heres the submit-->
+								<input type="submit" name="submit" value="send">
+							</div>
+								<!--here's the (possibly unnecessary) hidden-->
+								<input type="hidden" name="action" value="message">
+						</div>
+					</form>
+				</div><!--end of send_message-->
+			</div><!--end of chat_window-->
+			<div id="users" class="large-2 columns">
+				<h4>Online Users</h4>
+				<div id="user_box">
+					<!--online users displayed here, use <p></p> or <span></span><br>-->
+				</div><!--end of user_box-->
+			</div><!--end of users-->
+		</div><!--end of boxes-->
+		<div id="profile_modal" class="reveal-modal [medium]">
+			<h4>Profile</h4>
+			<ul>
+				<li>Username: <span id="profile_username"></span></li>
+				<li>Wins: <span id="wins"></span></li>
+				<li>Ties: <span id="ties"></span></li>
+				<li>Losses: <span id="losses"></span></li>
+			</ul>
+		</div>
+		<div id="create_game_modal" class="reveal-modal [medium]">
+			<h4>Create Game</h4>
+			<form id="create_game">
+				<select name="number_of_players" id="number_of_players">
+					<option value="two">2 Players</option>
+					<option value="three">3 Players</option>
+					<option value="four">4 players</option>
+				</select>
+				<input type="text" name="create_name" placeholder="Game Name">
+				<input type="text" name="create_password" placeholder="Game Password">
+				<input type="text" name="create_confirm" placeholder="Confirm Password">
+				<input type="submit" value="Create" name="action" value="create_game">
+			</form>
+		</div><!--end of create_game_modal-->
+	</div><!--end of wrapper-->
+	<script>
+  document.write('<script src=' +
+  ('__proto__' in {} ? '../assets/foundation/js/vendor/zepto' : '../assets/foundation/js/vendor/jquery') +
+  '.js><\/script>')
+  </script>
+  <script src="../assets/foundation/js/foundation/foundation.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.alerts.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.clearing.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.cookie.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.dropdown.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.forms.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.joyride.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.magellan.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.orbit.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.placeholder.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.reveal.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.section.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.tooltips.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.topbar.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.interchange.js"></script>
+  <script>
+    $(document).foundation();
+  </script>
+
+
+</body>
+</html>
