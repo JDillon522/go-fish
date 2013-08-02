@@ -7,14 +7,12 @@
   <meta name="viewport" content="width=device-width" />
   <title>Node Fish - Login</title>
 
-  <!-- If you are using CSS version, only link these 2 files, you may add app.css to use for your overrides if you like. -->
+  <!-- CSS -->
   <link rel="stylesheet" href="files/assets/Foundation/css/normalize.css" />
   <link rel="stylesheet" href="files/assets/Foundation/css/foundation.css" />
-
-  <!-- If you are using the gem version, you need this only -->
-  <link rel="stylesheet" href="files/assets/Foundation/css/app.css" />
   <link rel="stylesheet" href="files/assets/css/login_page.css"/>
 
+  <!-- Javascript and Node.js -->
   <script src="files/assets/Foundation/js/vendor/custom.modernizr.js"></script>
   <script type="text/javascript" src="files/assets/js/jquery.js"></script>
   <!-- <script type="text/css" src="login_page.js"></script> -->
@@ -48,7 +46,7 @@
 				form.attr('action'),
 				form.serialize(),
 				function (result){  
-					if (result.success == false){
+					if (result.success === false){
 						var html = "";
 						for (var i = 0; i < result.message.length; i++){
 							html += "<p>Failed: "+result.message[i]+"</p>";
@@ -91,7 +89,12 @@
 				</div><!--end of row-->
 			</div> <!--end of center_text-->
 		</div> <!--end of center content-->
-		<div id="login_modal" class="reveal-modal [medium]">		
+	</div> <!--end of wrapper-->
+
+
+<!-- Modals -->
+	<!-- Login Modal -->
+	<div id="login_modal" class="reveal-modal [medium]">		
 			<form id="login_form" action="/login" method="get">
 				<div id="login_errors">
 					<!--deposit login errors here-->
@@ -102,6 +105,8 @@
 				<input type="submit" id="submit" name="submit" value="Login">
 			</form>
 		</div> <!--end of login_modal-->
+		
+		<!-- Register Modal -->
 		<div id="register_modal" class="reveal-modal [medium]">
 			<form id="register_form" action="/register" method="get">
 				<div id="register_errors">
@@ -119,7 +124,6 @@
 		<div id="register_confirmation" class="reveal-modal [small]">
 			<h3>User Registered!</h3>
 		</div> <!--end of register_confirmation-->
-	</div> <!--end of wrapper-->
 
 
 

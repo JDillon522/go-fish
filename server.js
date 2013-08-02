@@ -5,7 +5,7 @@ function startServer(route, handle) {
 	function onRequest (request, response){
 
 		var pathname = url.parse(request.url).pathname;
-		// console.log("request for " + pathname + " received.");
+		console.log("request for " + pathname + " received.");
 		route(handle, pathname, response, request);
 	};
 

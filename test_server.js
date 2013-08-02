@@ -45,12 +45,9 @@ db.connect(function(err) {
 testServer = http.createServer(function (request, response){
 	//get the request url
 	var pageUrl = url.parse(request.url).pathname;
-	//console.log(pageUrl);
 
 	//start nodejs session handling
-	sessionHandler.httpRequest(request, response, function (err, session) 
-	{
-
+	sessionHandler.httpRequest(request, response, function (err, session) {
 		if((pageUrl === '/register') || (pageUrl === '/login')){
 
 			var dataQuery = url.parse(request.url).query;
@@ -60,11 +57,10 @@ testServer = http.createServer(function (request, response){
 
 				//set the session variables, login the user
 				if(result.login_success){
-					session.set('is_logged_in', true);
+					session.set('isLoggedIn', true);
 					session.set('user', {
-						'username': formData.login_username
+						'username': formData.loginUsername;
 					});
-					//console.log(session.get('user').username);
 				}
 				//send back the result to the login form
 				response.end(JSON.stringify(result));
@@ -79,10 +75,11 @@ testServer = http.createServer(function (request, response){
 			}
 			else {
 				validateLoginData(
-					formData.login_username,
+					formData.loginUsername,
 					formData.login_password);
 			}
 		}
+// WHAT IS THIS FOR??
 		else if (pageUrl === '/get_username'){
 			//quick and dirty, probably not worth copying into production code :P
 			username = session.get('user').username;
@@ -90,8 +87,9 @@ testServer = http.createServer(function (request, response){
 			//console.log("username: " + username);
 			response.end(JSON.stringify(result));
 		}
+// LOGOUT 
 		else if (pageUrl === '/logout'){
-			session.set('is_logged_in', false);
+			session.set('isLoggedIn', false);
 			session.set('user', {});
 			
 			//send back the result to clients page
@@ -105,57 +103,16 @@ testServer = http.createServer(function (request, response){
 
 		else{
 			//check if client is login
-			if((session.get('is_logged_in') != true) && (pageUrl === '/')){
+			if((session.get('isLoggedIn') != true) && (pageUrl === '/')){
 				filePath = __dirname + '/files/html/login_page.html';
 			}
 			else{
 				filePath = __dirname + pageUrl;
-				console.log("We're logged in if 'is_logged_in' is: " + (session.get('is_logged_in')));
+				console.log("We're logged in if 'isLoggedIn' is: " + (session.get('isLoggedIn')));
 			}
 			console.log(filePath);
 
-			//loading static files
-			var tmp = filePath.lastIndexOf('.'); //set tmp='.' in file_path string
-			var ext = filePath.substring(tmp + 1); //gets part of string AFTER '.'
-																							//so, extension of the file
-
-			// HERE is where we FINALLY start our response object!
-			//first lets tackle an image?
-			if(ext === 'jpeg'){
-
-				response.writeHead(200, {'Content-type': 'image/jpeg'});
-
-				// fs.stat(filePath, function (error, stat){
-				// 	var readStream;
-
-				// 	response.writeHead(200, {
-				// 		'Content-type': 'image/jpeg',
-				// 		'Content-Length': stat.size
-				// 	});
-				// 	readStream = fs.createReadStream(filePath);
-				// 	//pump the file to the response
-				// 	util.pump(readStream, response, function (error){
-				// 		if(error){
-				// 			throw error;
-				// 		}
-				// 	});
-				// });
-
-			}
-			else if(ext === 'js')
-				response.writeHead(200, {'Content-type': 'text/javascript'});
-			else if(ext === 'css')
-				response.writeHead(200, {'Content-type': 'text/css'});
-			else
-				response.writeHead(200, {'Content-type': 'text/html'});
-
-			//this is for not reloading page twice: look into this more?
-			if ((pageUrl != '/favicon.ico') && (ext != 'jpeg')) {
-				fs.readFile(filePath, 'utf8', function (errors, contents){
-					response.end(contents);
-				});	
-			}
-			else
+				//DO WE NEED TO KEEP THIS RESPONSE.END?
 				response.end();
 		}
 	});
@@ -181,8 +138,7 @@ function checkForExistingUser(username, password){
 					// to be an array
 				}
 				eventEmitter.emit('loginResult', badUserCheckResult);
-			}
-			else {
+			} else {
 				//pull out hashed password
 				hash = results[0].hash;
 
@@ -334,5 +290,3 @@ function validateRegistrationData(username, email, password, confirm_password){
 		checkForDuplicateUser(username, email, password);
 	}
 }
-
-console.log('Server running at http://localhost:8080/');
