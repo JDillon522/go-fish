@@ -106,12 +106,13 @@ testServer = http.createServer(function (request, response){
 		else{
 			//check if client is login
 			if((session.get('is_logged_in') != true) && (pageUrl === '/')){
-				filePath = 'login_page.html';
+				filePath = __dirname + '/files/html/login_page.html';
 			}
 			else{
 				filePath = __dirname + pageUrl;
+				console.log("We're logged in if 'is_logged_in' is: " + (session.get('is_logged_in')));
 			}
-			//console.log(filePath);
+			console.log(filePath);
 
 			//loading static files
 			var tmp = filePath.lastIndexOf('.'); //set tmp='.' in file_path string
@@ -190,7 +191,7 @@ function checkForExistingUser(username, password){
 					goodPasswordResult = {
 						'login_success' : true,
 						'success' : true,
-						'location': '/temp_index.html'
+						'location': '/files/html/temp_index.html'
 					}
 					console.log('User checks out, we can log in');
 					eventEmitter.emit('loginResult', goodPasswordResult);
