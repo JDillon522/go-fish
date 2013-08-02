@@ -19,7 +19,7 @@ h1, h2, h3 {
 
 
 #center_content {
-	background: url("koi_oil_crop.jpeg") no-repeat center center fixed; 
+	background: url("../images/koi_oil_crop.jpeg") no-repeat center center fixed; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
