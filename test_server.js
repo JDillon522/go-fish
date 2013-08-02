@@ -7,6 +7,7 @@ var querystring = require('querystring');
 var session = require('sessions');
 var events = require('events');
 var util = require('util');
+var bcrypt = require('bcrypt');
 var Validator = require('validator').Validator;
 
 var sessionHandler = new session();
@@ -55,15 +56,15 @@ testServer = http.createServer(function (request, response){
 			var dataQuery = url.parse(request.url).query;
 			var formData = querystring.parse(dataQuery);
 
-			eventEmitter.on('loginResult', function (result){
+			eventEmitter.once('loginResult', function (result){
 
 				//set the session variables, login the user
-				if(result.success){
+				if(result.login_success){
 					session.set('is_logged_in', true);
 					session.set('user', {
 						'username': formData.login_username
 					});
-					console.log(session.get('user').username);
+					//console.log(session.get('user').username);
 				}
 				//send back the result to the login form
 				response.end(JSON.stringify(result));
@@ -86,7 +87,7 @@ testServer = http.createServer(function (request, response){
 			//quick and dirty, probably not worth copying into production code :P
 			username = session.get('user').username;
 			result = { 'username' : username }
-			console.log("username: " + username);
+			//console.log("username: " + username);
 			response.end(JSON.stringify(result));
 		}
 		else if (pageUrl === '/logout'){
@@ -97,7 +98,7 @@ testServer = http.createServer(function (request, response){
 			response.end(
 				JSON.stringify({
 					'success': true,
-					'location': '/login_page.html'
+					'location': '/'
 				})
 			);
 		}
@@ -110,7 +111,7 @@ testServer = http.createServer(function (request, response){
 			else{
 				filePath = __dirname + pageUrl;
 			}
-			console.log(filePath);
+			//console.log(filePath);
 
 			//loading static files
 			var tmp = filePath.lastIndexOf('.'); //set tmp='.' in file_path string
@@ -159,26 +160,6 @@ testServer = http.createServer(function (request, response){
 	});
 }).listen(8080);
 
-function checkUserPassword(hash, password){
-
-	if (hash === password){
-		goodPasswordResult = {
-			'success' : true,
-			'location': '/temp_index.html'
-		}
-		console.log('User checks out, we can log in');
-		eventEmitter.emit('loginResult', goodPasswordResult);
-	}
-	else{
-		badPasswordResult = {
-			'success' : false,
-			'message' : ['Incorrect Password.']
-		}
-		eventEmitter.emit('loginResult', badPasswordResult);
-	}
-
-}
-
 function checkForExistingUser(username, password){
 	//we have to send the password so we can send it on to the loginUser
 	// if we register this user
@@ -189,7 +170,7 @@ function checkForExistingUser(username, password){
 			if (errors) throw errors;
 
 			//console.log(this.sql);
-			console.log(results);
+			//console.log(results);
 
 			if (results.length === 0){
 				badUserCheckResult = {
@@ -203,23 +184,38 @@ function checkForExistingUser(username, password){
 			else {
 				//pull out hashed password
 				hash = results[0].hash;
-				checkUserPassword(hash, password);
+
+				var match = bcrypt.compareSync(password, hash);
+				if (match){
+					goodPasswordResult = {
+						'login_success' : true,
+						'success' : true,
+						'location': '/temp_index.html'
+					}
+					console.log('User checks out, we can log in');
+					eventEmitter.emit('loginResult', goodPasswordResult);
+				}
+				else{
+					badPasswordResult = {
+						'success' : false,
+						'message' : ['Incorrect Password.']
+					}
+					eventEmitter.emit('loginResult', badPasswordResult);
+				}
 			}
 	});
 }
 
 function addUser(username, email, password){
-	//first, hash the password
-	//var hash = hashData(password);
-	// for testing, for now:
-	var hash = "kitty";
+	//Is there a sane way to do this asynchronously? Would I even want to?
+	var hash = bcrypt.hashSync(password, 13); //Lucky 13!
+
 	db.query('INSERT INTO users SET username=?, email=?, hash=?, created_at=NOW();',
 		[username, email, hash],
 		function (errors, results, fields) {
 			if (errors) throw errors;
 
-			console.log(this.sql);
-
+			//console.log(this.sql);
 			goodInsertResult = {
 				'success': true,
 				'message': 'You are registered! Please log in.'
@@ -227,10 +223,8 @@ function addUser(username, email, password){
 
 			console.log("Registered: ");
 			console.log(results);
-
 			eventEmitter.emit('loginResult', goodInsertResult);
-		}
-	);
+		});
 }
 
 function checkForDuplicateUser(username, email, password){
@@ -336,7 +330,7 @@ function validateRegistrationData(username, email, password, confirm_password){
 	else
 	{
 		console.log("Form information valid");
-		checkForDuplicateUser(username, email);
+		checkForDuplicateUser(username, email, password);
 	}
 }
 
