@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>Node Fish - Login</title>
+
+  <!-- If you are using CSS version, only link these 2 files, you may add app.css to use for your overrides if you like. -->
+  <link rel="stylesheet" href="../assets/foundation/css/normalize.css" />
+  <link rel="stylesheet" href="../assets/foundation/css/foundation.css" />
+
+  <!-- If you are using the gem version, you need this only -->
+ <!--  <link rel="stylesheet" href="../assets/foundation/css/app.css" /> -->
+  <link rel="stylesheet" href="../assets/CSS/login_page.css"/>
+
+  <script src="../assets/foundation/js/vendor/custom.modernizr.js"></script>
+  <script type="text/css" src="../assets/JS/jquery.js"></script>
+
+  <!-- WHERE IS THIS SCRIPT -->
+  <!--<script type="text/css" src="login_page.js"></script>-->
+
+</head>
+<body>
+	<div id="wrapper">
+		<div id="page_headers">
+			<div id="non-modals">
+				<div id="login_div" class="right"> <!--using foundation modals-->
+					<h3 data-reveal-id="login_modal">Login</h3>
+				</div> <!--end of login_div-->
+				<div id="register_div" class="right"> <!--using foundation modals-->
+						<h3 data-reveal-id="register_modal">Register</h3>
+				</div> <!--end of register_div-->
+			</div> <!--end of non-modals-->
+		</div> <!--end of page_headers-->
+		<div id="center_content">
+			<div id="center_text">
+				<div class="row">
+					<h1 class="center">Node Fish</h1>
+					<h2>Three developers-in-training attempting to learn node.js</h2>
+					<div id="about"> <!--uses jquery dropdown instead of foundation modals-->
+						<h3 data-dropdown="about_drop">About this project</h3>
+						<div id="about_drop" class="f-dropdown content large" data-dropdown-content>
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe, beatae, perferendis voluptatem nihil optio aliquid quos magnam quidem dignissimos voluptatibus voluptas praesentium tenetur ipsum sapiente dicta earum maiores reiciendis maxime!</p>
+						</div> <!--end of about_drop-->
+					</div> <!--end of about-->
+				</div><!--end of row-->
+			</div> <!--end of center_text-->
+		</div> <!--end of center content-->
+		<div id="login_modal" class="reveal-modal [medium]">		
+			<form id="login_form" action="#" method="get">
+				<div id="login_errors">
+					<!--deposit login errors here-->
+				</div> <!--end of login_errors-->
+				<input type="text" id="login_username" placeholder="Username">
+				<input type="text" id="login_password" placeholder="Password">
+				<!--change this type to a submit once hooked up to backend-->
+				<input type="button" id="submit" name="submit" value="Login">
+			</form>
+		</div> <!--end of login_modal-->
+		<div id="register_modal" class="reveal-modal [medium]">
+			<form id="register_form" action="#" method="get">
+				<div id="register_errors">
+					<!--deposit registration errors here-->
+				</div> <!--end of register_errors-->
+				<input type="text" id="register_username" placeholder="Username">
+				<input type="text" id="register_email" placeholder="Email">
+				<input type="text" id="register_password" placeholder="Password">
+				<input type="text" id="confirm_password" placeholder="Confirm Password">
+				<!--change this type to a submit once hooked up to backend-->
+				<input type="button" id="submit" name="submit" value="Register" data-reveal-id="register_confirmation">
+			</form>
+		</div> <!--end of register_modal-->
+		<div id="register_confirmation" class="reveal-modal [small]">
+			<h3>User Registered!</h3>
+		</div> <!--end of register_confirmation-->
+	</div> <!--end of wrapper-->
+
+
+
+	<script>
+  document.write('<script src=' +
+  ('__proto__' in {} ? '../assets/foundation/js/vendor/zepto' : 'foundation/js/vendor/jquery') +
+  '.js><\/script>')
+  </script>
+  <script src="../assets/foundation/js/foundation/foundation.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.alerts.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.clearing.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.cookie.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.dropdown.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.forms.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.joyride.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.magellan.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.orbit.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.placeholder.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.reveal.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.section.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.tooltips.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.topbar.js"></script>
+  <script src="../assets/foundation/js/foundation/foundation.interchange.js"></script>
+  <script>
+    $(document).foundation();
+  </script>
+</body>
+</html>
