@@ -6,7 +6,7 @@ function startPage(response, request){
 	console.log('Request handler "start" was called.');
 	
 
-	fs.readFile('../../html/login_page.html', function (error, data){
+	fs.readFile('html/login_page.html', function (error, data){
 		if(error){
 			response.writeHeader(500, {"Content-Type": "text/html"});  
 			response.write("<h1>Internal Server Error!... All hope is lost. Abandon ship!... FML</h1>");    
@@ -24,7 +24,7 @@ function startPage(response, request){
 function dashboard(response, request){  
 	console.log("Request handler 'dashboard' was called.");
 	
-	fs.readFile('../../html/dashboard.html', function (error, data){
+	fs.readFile('html/dashboard.html', function (error, data){
 		if(error){
 			response.writeHeader(500, {"Content-Type": "text/html"});  
 			response.write("<h1>Internal Server Error!... All hope is lost. Abandon ship!... FML</h1>");    
