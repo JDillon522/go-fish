@@ -8,18 +8,61 @@
   <title>Node Fish - Login</title>
 
   <!-- If you are using CSS version, only link these 2 files, you may add app.css to use for your overrides if you like. -->
-  <link rel="stylesheet" href="../assets/foundation/css/normalize.css" />
-  <link rel="stylesheet" href="../assets/foundation/css/foundation.css" />
+  <link rel="stylesheet" href="files/assets/Foundation/css/normalize.css" />
+  <link rel="stylesheet" href="files/assets/Foundation/css/foundation.css" />
 
   <!-- If you are using the gem version, you need this only -->
- <!--  <link rel="stylesheet" href="../assets/foundation/css/app.css" /> -->
-  <link rel="stylesheet" href="../assets/CSS/login_page.css"/>
+  <link rel="stylesheet" href="files/assets/Foundation/css/app.css" />
+  <link rel="stylesheet" href="files/assets/css/login_page.css"/>
 
-  <script src="../assets/foundation/js/vendor/custom.modernizr.js"></script>
-  <script type="text/css" src="../assets/JS/jquery.js"></script>
+  <script src="files/assets/Foundation/js/vendor/custom.modernizr.js"></script>
+  <script type="text/javascript" src="files/assets/js/jquery.js"></script>
+  <!-- <script type="text/css" src="login_page.js"></script> -->
+  <script type="text/javascript">
+	$(document).ready(function(){
 
-  <!-- WHERE IS THIS SCRIPT -->
-  <!--<script type="text/css" src="login_page.js"></script>-->
+		$("#register_form").submit(function(){
+			var form = $(this);
+			$.getJSON(
+				form.attr('action'),
+				form.serialize(),
+				function (result){  
+					if (result.success === false){
+						var html = "<p>Failed:</p>";
+						for (var i = 0; i < result.message.length; i++){
+							html += "<p>"+result.message[i]+"</p>";
+						}
+						$('#register_errors').html(html);
+					}
+					else {
+						var html = "Success: <p>"+result.message+"</p>";
+						$('#register_errors').html(html);
+					}
+				});
+			return false;
+		});
+
+		$("#login_form").submit(function(){
+			var form = $(this);
+			$.getJSON(
+				form.attr('action'),
+				form.serialize(),
+				function (result){  
+					if (result.success == false){
+						var html = "";
+						for (var i = 0; i < result.message.length; i++){
+							html += "<p>Failed: "+result.message[i]+"</p>";
+						}
+						$('#login_errors').html(html);
+					}
+					else {
+						window.location = result.location;
+					}
+				});
+			return false;
+		});
+	});
+  </script>
 
 </head>
 <body>
@@ -49,27 +92,28 @@
 			</div> <!--end of center_text-->
 		</div> <!--end of center content-->
 		<div id="login_modal" class="reveal-modal [medium]">		
-			<form id="login_form" action="#" method="get">
+			<form id="login_form" action="/login" method="get">
 				<div id="login_errors">
 					<!--deposit login errors here-->
 				</div> <!--end of login_errors-->
-				<input type="text" id="login_username" placeholder="Username">
-				<input type="text" id="login_password" placeholder="Password">
+				<input type="text" id="login_username" name="login_username" placeholder="Username">
+				<input type="password" id="login_password" name="login_password" placeholder="Password">
 				<!--change this type to a submit once hooked up to backend-->
-				<input type="button" id="submit" name="submit" value="Login">
+				<input type="submit" id="submit" name="submit" value="Login">
 			</form>
 		</div> <!--end of login_modal-->
 		<div id="register_modal" class="reveal-modal [medium]">
-			<form id="register_form" action="#" method="get">
+			<form id="register_form" action="/register" method="get">
 				<div id="register_errors">
 					<!--deposit registration errors here-->
 				</div> <!--end of register_errors-->
-				<input type="text" id="register_username" placeholder="Username">
-				<input type="text" id="register_email" placeholder="Email">
-				<input type="text" id="register_password" placeholder="Password">
-				<input type="text" id="confirm_password" placeholder="Confirm Password">
+				<input type="text" id="register_username" name="register_username"placeholder="Username">
+				<input type="text" id="register_email" name="register_email" placeholder="Email">
+				<input type="password" id="register_password" name="register_password" placeholder="Password">
+				<input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password">
 				<!--change this type to a submit once hooked up to backend-->
-				<input type="button" id="submit" name="submit" value="Register" data-reveal-id="register_confirmation">
+				<input type="submit" id="submit" name="submit" value="Register">
+				<!-- data-reveal-id="register_confirmation"> -->
 			</form>
 		</div> <!--end of register_modal-->
 		<div id="register_confirmation" class="reveal-modal [small]">
@@ -81,26 +125,29 @@
 
 	<script>
   document.write('<script src=' +
-  ('__proto__' in {} ? '../assets/foundation/js/vendor/zepto' : 'foundation/js/vendor/jquery') +
+  ('__proto__' in {} ? 'files/assets/Foundation/js/vendor/zepto' : 'files/assets/Foundation/js/vendor/jquery') +
   '.js><\/script>')
   </script>
-  <script src="../assets/foundation/js/foundation/foundation.js"></script>
-  <script src="../assets/foundation/js/foundation/foundation.alerts.js"></script>
-  <script src="../assets/foundation/js/foundation/foundation.clearing.js"></script>
-  <script src="../assets/foundation/js/foundation/foundation.cookie.js"></script>
-  <script src="../assets/foundation/js/foundation/foundation.dropdown.js"></script>
-  <script src="../assets/foundation/js/foundation/foundation.forms.js"></script>
-  <script src="../assets/foundation/js/foundation/foundation.joyride.js"></script>
-  <script src="../assets/foundation/js/foundation/foundation.magellan.js"></script>
-  <script src="../assets/foundation/js/foundation/foundation.orbit.js"></script>
-  <script src="../assets/foundation/js/foundation/foundation.placeholder.js"></script>
-  <script src="../assets/foundation/js/foundation/foundation.reveal.js"></script>
-  <script src="../assets/foundation/js/foundation/foundation.section.js"></script>
-  <script src="../assets/foundation/js/foundation/foundation.tooltips.js"></script>
-  <script src="../assets/foundation/js/foundation/foundation.topbar.js"></script>
-  <script src="../assets/foundation/js/foundation/foundation.interchange.js"></script>
+  <script src="files/assets/Foundation/js/foundation/foundation.js"></script>
+  <script src="files/assets/Foundation/js/foundation.alerts.js"></script>
+  <script src="files/assets/Foundation/js/foundation/foundation.clearing.js"></script>
+  <script src="files/assets/Foundation/js/foundation/foundation.cookie.js"></script>
+  <script src="files/assets/Foundation/js/foundation/foundation.dropdown.js"></script>
+  <script src="files/assets/Foundation/js/foundation/foundation.forms.js"></script>
+  <script src="files/assets/Foundation/js/foundation/foundation.joyride.js"></script>
+  <script src="files/assets/Foundation/js/foundation/foundation.magellan.js"></script>
+  <script src="files/assets/Foundation/js/foundation/foundation.orbit.js"></script>
+  <script src="files/assets/Foundation/js/foundation/foundation.placeholder.js"></script>
+  <script src="files/assets/Foundation/js/foundation/foundation.reveal.js"></script>
+  <script src="files/assets/Foundation/js/foundation/foundation.section.js"></script>
+  <script src="files/assets/Foundation/js/foundation/foundation.tooltips.js"></script>
+  <script src="files/assets/Foundation/js/foundation/foundation.topbar.js"></script>
+  <script src="files/assets/Foundation/js/foundation/foundation.interchange.js"></script>
   <script>
     $(document).foundation();
   </script>
+</body>
+</html>
+
 </body>
 </html>
