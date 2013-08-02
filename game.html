@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>Foundation 4</title>
+
+  <!-- If you are using CSS version, only link these 2 files, you may add app.css to use for your overrides if you like. -->
+  <link rel="stylesheet" href="assets/Foundation/css/normalize.css" />
+  <link rel="stylesheet" href="assets/Foundation/css/foundation.css" />
+
+  <!-- If you are using the gem version, you need this only -->
+  <link rel="stylesheet" href="assets/Foundation/css/app.css" />
+
+  <link rel="stylesheet" href="assets/playing_cards/playingCards.ui.css" />
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="assets/Foundation/js/vendor/custom.modernizr.js"></script>
+  <script src="assets/playing_cards/playingCards.js"></script>
+  <script src="assets/playing_cards/playingCards.ui.js"></script>
+  <script src="assets/js/game.js"></script>
+
+</head>
+<body>
+	<div id="wrapper">
+		<div class="playarea" id="player1">
+			<div class="playercard"></div>
+			<div class="matcharea" id="match1"></div>
+		</div>
+		<div class="playarea" id="player2">
+			<div class="playercard"></div>
+			<div class="matcharea" id="match2"></div>
+		</div>
+		<div class="playarea" id="player3">
+			<div class="playercard"></div>
+			<div class="matcharea" id="match3"></div>
+		</div>
+
+		<span id="click">Click Me</span>
+
+		<div id="deck">
+		</div>
+
+		<div id="hand">
+		</div>
+	</div><!--end of wrapper-->
+<script>
+  document.write('<script src=' +
+  ('__proto__' in {} ? 'assets/Foundation/js/vendor/zepto' : 'assets/Foundation/js/vendor/jquery') +
+  '.js><\/script>')
+  </script>
+  <script src="assets/Foundation/js/foundation/foundation.js"></script>
+  <script src="assets/Foundation/js/foundation/foundation.alerts.js"></script>
+  <script src="assets/Foundation/js/foundation/foundation.clearing.js"></script>
+  <script src="assets/Foundation/js/foundation/foundation.cookie.js"></script>
+  <script src="assets/Foundation/js/foundation/foundation.dropdown.js"></script>
+  <script src="assets/Foundation/js/foundation/foundation.forms.js"></script>
+  <script src="assets/Foundation/js/foundation/foundation.joyride.js"></script>
+  <script src="assets/Foundation/js/foundation/foundation.magellan.js"></script>
+  <script src="assets/Foundation/js/foundation/foundation.orbit.js"></script>
+  <script src="assets/Foundation/js/foundation/foundation.placeholder.js"></script>
+  <script src="assets/Foundation/js/foundation/foundation.reveal.js"></script>
+  <script src="assets/Foundation/js/foundation/foundation.section.js"></script>
+  <script src="assets/Foundation/js/foundation/foundation.tooltips.js"></script>
+  <script src="assets/Foundation/js/foundation/foundation.topbar.js"></script>
+  <script src="assets/Foundation/js/foundation/foundation.interchange.js"></script>
+  <script>
+    $(document).foundation();
+  </script>
+</body>
+</html>
