@@ -45,7 +45,6 @@ function route(handle, pathname, response, request){
 
 			response.end();  
 		});
-		response.end();
 	}
 }
 
