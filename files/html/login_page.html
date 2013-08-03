@@ -24,7 +24,7 @@
 			$.getJSON(
 				form.attr('action'),
 				form.serialize(),
-				function (result){  
+				function (result){
 					if (result.success === false){
 						var html = "<p>Failed:</p>";
 						for (var i = 0; i < result.message.length; i++){
@@ -61,6 +61,8 @@
 		});
 	});
   </script>
+<!-- Favicon -->
+<link href="files/assets/images/favicon.ico" rel='icon' type='image/x-icon'>
 
 </head>
 <body>
@@ -99,7 +101,7 @@
 				<div id="login_errors">
 					<!--deposit login errors here-->
 				</div> <!--end of login_errors-->
-				<input type="text" id="login_username" name="login_username" placeholder="Username">
+				<input type="text" id="loginUsername" name="loginUsername" placeholder="Username">
 				<input type="password" id="login_password" name="login_password" placeholder="Password">
 				<!--change this type to a submit once hooked up to backend-->
 				<input type="submit" id="submit" name="submit" value="Login">
@@ -133,7 +135,7 @@
   '.js><\/script>')
   </script>
   <script src="files/assets/Foundation/js/foundation/foundation.js"></script>
-  <script src="files/assets/Foundation/js/foundation.alerts.js"></script>
+  <script src="files/assets/Foundation/js/foundation/foundation.alerts.js"></script>
   <script src="files/assets/Foundation/js/foundation/foundation.clearing.js"></script>
   <script src="files/assets/Foundation/js/foundation/foundation.cookie.js"></script>
   <script src="files/assets/Foundation/js/foundation/foundation.dropdown.js"></script>

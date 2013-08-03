@@ -8,6 +8,8 @@ function route(handle, pathname, response, request){
 
 	if (typeof handle[pathname] === "function"){		
 		handle[pathname](response, request);
+		} else if (pathname === '/register' || pathname === '/login') {
+			console.log('Register or Login');
 		} else {
 
 		var file_path = "";
@@ -28,7 +30,6 @@ function route(handle, pathname, response, request){
 				response.end("<h1>FS READ FILE ERROR: Internal Server Error!</h1>");    
 			}
 			else{ 
-				console.log('SUCCESS!');
 				// set content type
 				if (extension === 'html') response.writeHead(200, {"Content-Type": 'text/html'});
 				else if (extension === 'htm') response.writeHead(200, {"Content-Type": 'text/html'});
@@ -37,12 +38,10 @@ function route(handle, pathname, response, request){
 				else if (extension === 'png') response.writeHead(200, {"Content-Type": 'image/png'});
 				else if (extension === 'jpg') response.writeHead(200, {"Content-Type": 'image/jpg'});
 				else if (extension === 'jpeg') response.writeHead(200, {"Content-Type": 'image/jpeg'});
+				else if (extension === 'ico') response.writeHead(200, {"Content-Type": 'image/x-icon'});
 				else { console.log("NO CORRECT EXTENSION")};
-				console.log(extension);
 				response.end(contents);
-
 			}
-
 			response.end();  
 		});
 	}

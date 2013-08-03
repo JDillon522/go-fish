@@ -2,14 +2,22 @@ var http = require('http');
 var url = require('url');
 var fs = require('fs');
 var mysql = require('mysql');
+var events = require('events');
 var querystring = require('querystring');
 var session = require('sessions');
-var requestHandlers = require('requestHandlers');
+var requestHandlers = require('./requestHandlers');
 
 var sessionHandler = new session();
+var eventEmitter = new events.EventEmitter();
+
 
 function startServer(route, handle) {
 	function onRequest (request, response){
+		// load pages
+		var pathname = url.parse(request.url).pathname;
+		console.log("request for " + pathname + " received.");
+		route(handle, pathname, response, request);
+
 		var db = mysql.createConnection({
 			port: 8889,
 			user: 'root',
@@ -35,26 +43,20 @@ function startServer(route, handle) {
 						formData.register_username,
 						formData.register_email,
 						formData.register_password,
-						formData.confirm_password);
+						formData.confirm_password,
+						db,
+						response
+						);
 				} else {
+					console.log(formData);
 					requestHandlers.validateLoginData(
 						formData.loginUsername,
-						formData.login_password);
+						formData.login_password,
+						db,
+						response,
+						session
+						);
 				}
-
-				// Listening for 'loginResult' event emitted from var from 
-				// function varifyLoginData and function checkForExistingUser 
-				eventEmitter.once('loginResult', function (result){
-					//set the session variables, login the user
-					if(result.login_success){
-						session.set('isLoggedIn', true);
-						session.set('user', {
-							'username': formData.loginUsername;
-						});
-					}
-					//send back the result to the login form
-					response.end(JSON.stringify(result));
-				});
 			}
 			// KEEP FOR INITAL TESTING. temp_index on .ready passes /get_username in order to prove session works
 			// DELETE WHEN PROVED 
@@ -79,22 +81,15 @@ function startServer(route, handle) {
 				);
 			} else{
 				//check if client is login
-				if((session.get('isLoggedIn') != true) && (pageUrl === '/')){
+				if((session.get('isLoggedIn') != true)){
 					filePath = __dirname + '/files/html/login_page.html';
 				} else{
 					filePath = __dirname + pageUrl;
 					console.log("We're logged in if 'isLoggedIn' is: " + (session.get('isLoggedIn')));
 				}
 				console.log(filePath);
-				//DO WE NEED TO KEEP THIS RESPONSE.END?
-				response.end();
 			}
 		});
-		
-		// load pages
-		var pathname = url.parse(request.url).pathname;
-		console.log("request for " + pathname + " received.");
-		route(handle, pathname, response, request);
 	};
 
 	http.createServer(onRequest).listen(8000);

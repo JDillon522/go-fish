@@ -59,7 +59,7 @@ testServer = http.createServer(function (request, response){
 				if(result.login_success){
 					session.set('isLoggedIn', true);
 					session.set('user', {
-						'username': formData.loginUsername;
+						'username': formData.loginUsername
 					});
 				}
 				//send back the result to the login form

@@ -9,7 +9,6 @@ var events = require('events');
 var util = require('util');
 var bcrypt = require('bcrypt');
 var Validator = require('validator').Validator;
-
 var eventEmitter = new events.EventEmitter();
 
 //catch all errors into this._errors array
@@ -19,7 +18,8 @@ Validator.prototype.error = function (msg) {
 }
 
 //returns all errors from this._errors array
-Validator.prototype.getErrors = function () { return this._errors; }
+Validator.prototype.getErrors = function () { 
+	return this._errors; }
 
 function startPage(response, request){ 
 	console.log('Request handler "start" was called.');
@@ -51,7 +51,7 @@ function dashboard(response, request){
 	});
 }
 
-function checkForExistingUser(username, password){
+function checkForExistingUser(username, password, db, response){
 	//we have to send the password so we can send it on to the loginUser
 	// if we register this user
 	db.query(
@@ -60,9 +60,6 @@ function checkForExistingUser(username, password){
 		function (errors, results, fields) {
 			if (errors) throw errors;
 
-			//console.log(this.sql);
-			//console.log(results);
-
 			if (results.length === 0){
 				badUserCheckResult = {
 					'success': false,
@@ -70,6 +67,7 @@ function checkForExistingUser(username, password){
 					//this is an array since the front end expect the 'message' key
 					// to be an array
 				}
+				console.log("Emitting 'loginResult'");
 				eventEmitter.emit('loginResult', badUserCheckResult);
 			} else {
 				//pull out hashed password
@@ -80,9 +78,10 @@ function checkForExistingUser(username, password){
 					goodPasswordResult = {
 						'login_success' : true,
 						'success' : true,
-						'location': '/files/html/temp_index.html'
+						'location': '/files/html/dashboard.html'
 					}
 					console.log('User checks out, we can log in');
+					console.log("Emitting 'loginResult'");
 					eventEmitter.emit('loginResult', goodPasswordResult);
 				}
 				else{
@@ -90,13 +89,14 @@ function checkForExistingUser(username, password){
 						'success' : false,
 						'message' : ['Incorrect Password.']
 					}
+					console.log("Emitting 'loginResult'");
 					eventEmitter.emit('loginResult', badPasswordResult);
 				}
 			}
 	});
 }
 
-function addUser(username, email, password){
+function addUser(username, email, password, db, response){
 	//Is there a sane way to do this asynchronously? Would I even want to?
 	var hash = bcrypt.hashSync(password, 13); //Lucky 13!
 
@@ -110,51 +110,65 @@ function addUser(username, email, password){
 				'success': true,
 				'message': 'You are registered! Please log in.'
 			}
-
-			console.log("Registered: ");
-			console.log(results);
-			eventEmitter.emit('loginResult', goodInsertResult);
-		});
-}
-
-function checkForDuplicateUser(username, email, password){
-	//we have to include the password here, to send it on to the database
-	// if we register this user
-	db.query(
-		'SELECT username, email FROM users WHERE username=? OR email=?',
-		[username, email],
-		function (errors, results, fields) {
-			if (errors) throw errors;
-
-			//console.log(this.sql);
-
-			var error_message = new Array();
-
-			if (results.length > 0){
-				for(i = 0; i < results.length; i++){
-					if (results[i].username === username){
-						error_message.push('This username is already taken.');
-					}
-					if (results[i].email === email){
-						error_message.push('This email is already registered.');
-					}
-				}
-				badDuplicateUserResult = {
-					'success': false,
-					'message': error_message
-				}
-				eventEmitter.emit('loginResult', badDuplicateUserResult);
-			}
-			else {
-				noDuplicateUserResult = {
-					'success': true
-				}
-				addUser(username, email, password);
-			}
+		console.log("Registered: ");
+		console.log(results);
+		console.log("Emitting 'loginResult'");
+		eventEmitter.emit('loginResult', goodInsertResult);
 	});
 }
 
-function validateLoginData(username, password){
+function checkForDuplicateUser(username, email, password, db, response){
+	//we have to include the password here, to send it on to the database
+	// if we register this user
+	db.query('SELECT username, email FROM users WHERE username=? OR email=?', [username, email], function (errors, results, fields) {
+		if (errors) throw errors;
+
+		//console.log(this.sql);
+
+		var error_message = new Array();
+
+		if (results.length > 0){
+			for(i = 0; i < results.length; i++){
+				if (results[i].username === username){
+					error_message.push('This username is already taken.');
+				}
+				if (results[i].email === email){
+					error_message.push('This email is already registered.');
+				}
+			}
+			badDuplicateUserResult = {
+				'success': false,
+				'message': error_message
+			}
+			console.log("Emitting 'loginResult'");
+			eventEmitter.emit('loginResult', badDuplicateUserResult);
+		}
+		else {
+			noDuplicateUserResult = {
+				'success': true
+			}
+			addUser(username, email, password, db);
+		}
+	});
+}
+
+function validateLoginData(username, password, db, response, session){
+	// Listening for 'loginResult' event emitted from var from 
+	// function varifyLoginData and function checkForExistingUser 
+	eventEmitter.once('loginResult', function (result){
+		//set the session variables, login the user
+		console.log('loginResult triggered!');
+		console.log(result);
+		if(result.login_success){
+			session.set('isLoggedIn', true);
+			session.set('user', {
+				'username': username
+			});
+		}
+		//send back the result to the login form
+		response.end(JSON.stringify(result));
+	});
+
 	var validator = new Validator();
 
 	validator.check(username, {
@@ -176,15 +190,23 @@ function validateLoginData(username, password){
 			'success' : false,
 			'message' : errors
 		}
+		console.log("Emitting 'loginResult'");
 		eventEmitter.emit('loginResult', badLoginDataResult);
 	}
 	else {
 		console.log("Form information valid");
-		checkForExistingUser(username, password);
+		checkForExistingUser(username, password, db);
 	}
 }
 
-function validateRegistrationData(username, email, password, confirm_password){
+function validateRegistrationData(username, email, password, confirm_password, db, response){
+	// Listening for 'loginResult' event emitted from var from 
+	// function varifyLoginData and function checkForExistingUser 
+	eventEmitter.once('loginResult', function (result){
+		//send back the result to the registration form
+		response.end(JSON.stringify(result));
+	});
+
 	var validator = new Validator();
 
 	validator.check(username, {
@@ -215,12 +237,13 @@ function validateRegistrationData(username, email, password, confirm_password){
 			'success' : false,
 			'message' : errors
 		}
+		console.log("Emitting 'loginResult'");
 		eventEmitter.emit('loginResult', badRegistrationDataResult);
 	}
 	else
 	{
 		console.log("Form information valid");
-		checkForDuplicateUser(username, email, password);
+		checkForDuplicateUser(username, email, password, db);
 	}
 }
 
