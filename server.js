@@ -6,7 +6,7 @@
 var http = require('http');
 var url = require('url');
 var mysql = require('mysql');
-
+var io = require('socket.io');
 function startServer(route, loginRegistration, handle) {
 	// start connection to the Database
 	var db = mysql.createConnection({
@@ -21,8 +21,9 @@ function startServer(route, loginRegistration, handle) {
 		});
 	// any time a change occurs and the server receives a request
 	function onRequest (request, response){
-		// Determine if there is a login request. If false, this will keep
-		// the server from wasting energy loading and checking the scripts.
+		// Determine if there is a login or register request. If false, 
+		// this will keep the server from wasting energy loading and 
+		// checking the scripts.
 		var pathname = url.parse(request.url).pathname;
 		if (pathname === '/register' || pathname === '/login') {
 			// deal with login and registration attempts
@@ -32,8 +33,21 @@ function startServer(route, loginRegistration, handle) {
 			route(handle, pathname, response, request);
 		}	
 	}
+	//have socket io listen to server
+	var sockets = io.listen(server);
 
-	http.createServer(onRequest).listen(8000);
+	//listening to connection event
+	sockets.on('connection', function (socket){
+		//listening to send message event
+		socket.on('message', function (message){
+			//trigger display message event in all open sockets
+			socket.broadcast.emit('add_message', message);
+		});
+
+	});
+
+	var server = http.createServer(onRequest)
+	server.listen(8000);
 	console.log('Server is listening on port 8000.')
 }
 

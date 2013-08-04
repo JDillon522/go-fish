@@ -1,3 +1,5 @@
+Dashboard. Available chat and online users -->
+
 <!DOCTYPE html>
 <!--[if IE 8]>         <html class="no-js lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
@@ -7,16 +9,32 @@
   <meta name="viewport" content="width=device-width" />
   <title>Node Fish - Dashboard</title>
 
-  <!-- If you are using CSS version, only link these 2 files, you may add app.css to use for your overrides if you like. -->
+  <!-- Foundation CSS -->
   <link rel="stylesheet" href="../assets/foundation/css/normalize.css" />
   <link rel="stylesheet" href="../assets/foundation/css/foundation.css" />
-
-  <!-- If you are using the gem version, you need this only -->
-  <link rel="stylesheet" href="../assets/css/dashboard.css"/>
 
   <script src="../assets/foundation/js/vendor/custom.modernizr.js"></script>
   <script type="text/css" src="../assets/js/jquery.js"></script>
   <script type="text/css" src="dashboard.js"></script>
+
+  <!-- Socket.io -->
+  <script src="node_modules/socket.io/lib/socket.io.js"></script>
+	<script>
+	  var socket = io.connect('http://localhost:8000');
+	  socket.on('add_message', function (data) {
+	    console.log(data);
+	    $('#chat_display').appent('<p>' + data + '</p>');
+	  });
+
+	  $(document).ready(function(){
+	  	$("#chat_submit").submit(function(){
+	  		var message = $('#message_input').val();
+	  		socket.emit('message', message);
+	  		$('#chat_display').appent('<p>' + message + '</p>');
+	  		$('#message').val('');
+	  	})
+	  })
+	</script>
 
 </head>
 <body>
@@ -53,21 +71,21 @@
 					<!--append messages as <p>'s?-->
 				</div>
 				<div id="send_message_area">
+					
 					<form id="send_message">
-						<!--this form is really hard to read because of the foundation formatting, i will mark the inputs with comments-->
 						<div class="row">
+							
 							<div class="large-10 columns">
-								<!--heres the text input-->
-								<input type="text" name="message">
+								<input type="text" name="message_input" id="message_input">
 							</div>
+							
 							<div class="large-2 columns" id="chat_submit_area">
-								<!--heres the submit-->
-								<input type="submit" name="submit" value="send">
+								<input type="submit" name="submit" id="chat_submit" value="send">
 							</div>
-								<!--here's the (possibly unnecessary) hidden-->
-								<input type="hidden" name="action" value="message">
+
 						</div>
 					</form>
+
 				</div><!--end of send_message-->
 			</div><!--end of chat_window-->
 			<div id="users" class="large-2 columns">
@@ -128,3 +146,5 @@
 
 </body>
 </html>
+
+<!-- Written by Brendon Byrne - GitHub: byrnebt
